@@ -33,19 +33,21 @@ def about(request):
 
 
 def contact(request):
-    return HttpResponse("We are at contact")
+    return render(request, 'shop/about.html')
 
 
 def tracker(request):
-    return HttpResponse("We are at tracker")
+    return render(request, 'shop/about.html')
 
 
 def search(request):
-    return HttpResponse("We are at search")
+    return render(request, 'shop/about.html')
 
 
-def productView(request):
-    return HttpResponse("We are at product view")
+def productView(request, myid):
+    product = Product.objects.filter(id=myid)
+    print(product)
+    return render(request, 'shop/prodView.html', {'products': product[0]})
 
 
 def checkout(request):

@@ -1,46 +1,47 @@
 {% extends 'shop/besic.html' %}
 {% block css %}
 .col-md-3{
-    display: inline-block;
-    margin-left:-4px;
+display: inline-block;
+margin-left:-4px;
 }
 
 .carousel-indicators .active {
-    background-color: #cf4e04;
+background-color: #cf4e04;
 }
 
 
 .col-md-3 img{
 
-    max-width: 100px;
-    height: 160px;
+max-width: 100px;
+height: 160px;
 }
 
 body .carousel-indicator li{
-    background-color: blue;
+background-color: blue;
 }
 
 body .carousel-indicators{
-    bottom: 0;
+bottom: 0;
 }
 
 body .carousel-control-prev-icon,
 body .carousel-control-next-icon{
-    background-color:#cf4e04;
+background-color:#cf4e04;
 }
 
 .carousel-control-prev,
 .carousel-control-next{
-    top: auto;
-    bottom: auto;
-    padding-top:180px;
+top: auto;
+bottom: auto;
+padding-top:180px;
 
 }
 .carousel-control-prev{
-    padding-right:67px;
+padding-right:55px;
 }
 .carousel-control-next{
-    padding-left:67px;
+padding-left:55px;
+padding-left:55px;
 
 }
 
@@ -48,6 +49,7 @@ body .no-padding{
 padding-left: 0,
 padding-right: 0;
 }
+
 
 {% endblock %}
 {% block body %}
@@ -61,7 +63,7 @@ padding-right: 0;
 
     <h5 class="my-4">Flash Sale On {{product.0.category}} - Recommended Items</h5>
     <div class="row container">
-        <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel">
+        <div id="demo{{forloop.counter}}" class="carousel slide my-3"  data-ride="carousel">
             <ul class="carousel-indicators">
                 <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
                 {% for i in range %}
@@ -81,7 +83,9 @@ padding-right: 0;
                             <div class="card-body">
                                 <h6 class="card-title">{{i.product_name}}</h6>
                                 <p class="card-text">{{i.desc}}</p>
-                                <button id="pr{{i.id}}" class="btn btn-primary cart">Add To Cart</button>
+                                <button id="pr{{i.id}}" class="btn btn-sm btn-primary cart">Add Cart</button>
+                                <a href="/shop/products/{{i.id}}"><button id="qv{{i.id}}"
+                                        class="btn btn-sm btn-primary cart">Quick View</button></a>
                             </div>
                         </div>
                     </div>
@@ -94,49 +98,45 @@ padding-right: 0;
                 </div>
             </div>
         </div>
-    <!-- left and right controls for the slide -->
-    <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </a>
-    <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </a>
 
-     </div> 
-{% endfor %}\
-
- </div> 
+        <!-- left and right controls for the slide -->
+        <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+    {% endfor %}\
+</div>
 {% endblock %}
-
 {% block js %}
 <script>
-console.log('working');
-if(localStorage.getItem('cart') == null){
-var cart = {};
-}
-else
-{
-cart = JSON.parse(localStorage.getItem('cart'));
-document.getElementById('cart').innerHTML = Object.keys(cart).length;
-}
-$('.cart').click(function(){
+    console.log('working');
+    if (localStorage.getItem('cart') == null) {
+        var cart = {};
+    }
+    else {
+        cart = JSON.parse(localStorage.getItem('cart'));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    }
+    $('.cart').click(function () {
 
-console.log('clicked');
-var idstr= this.id.toString();
-console.log(idstr);
-if(cart[idstr]!= undefined) {
-cart[idstr] = cart[idstr]+1;
-}
-else{
-cart[idstr] = 1;
-}
-console.log(cart);
-localStorage.setItem('cart', JSON.stringify(cart));
-document.getElementById('cart').innerHTML = Object.keys(cart).length;
-});
-$('#popcart').popover();
-document.getElementById("popcart").setAttribute('data-content', '<h5>Cart for your items in my shopping cart</h5>');
+        console.log('clicked');
+        var idstr = this.id.toString();
+        console.log(idstr);
+        if (cart[idstr] != undefined) {
+            cart[idstr] = cart[idstr] + 1;
+        }
+        else {
+            cart[idstr] = 1;
+        }
+        console.log(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    });
+    $('#popcart').popover();
+    document.getElementById("popcart").setAttribute('data-content', '<h5>Cart for your items in my shopping cart</h5>');
+
 </script>
-
-
 {% endblock %}
