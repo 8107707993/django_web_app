@@ -114,7 +114,9 @@ padding-right: 0;
                         <div class="card-body">
                             <h6 class="card-title">{{i.product_name}}</h6>
                             <p class="card-text">{{i.desc}}</p>
-                            <button id="pr{{i.id}}" class="btn btn-sm btn-primary cart">Add Cart</button>
+                            <span id="divpr{{i.id}}" class="divpr">
+                                <button id="pr{{i.id}}" class="btn btn-sm btn-primary cart">Add Cart</button>
+                            </span>
                             <a href="/shop/products/{{i.id}}"><button id="qv{{i.id}}"
                                     class="btn btn-sm btn-primary cart">Quick View</button></a>
                         </div>
@@ -141,13 +143,14 @@ padding-right: 0;
 {% endblock %}
 {% block js %}
 <script>
-    console.log('working');
+
     if (localStorage.getItem('cart') == null) {
         var cart = {};
     }
     else {
         cart = JSON.parse(localStorage.getItem('cart'));
         document.getElementById('cart').innerHTML = Object.keys(cart).length;
+        updateCart(cart);
     }
     $('.cart').click(function () {
 
@@ -160,12 +163,34 @@ padding-right: 0;
         else {
             cart[idstr] = 1;
         }
+        updateCart(cart);
         console.log(cart);
         localStorage.setItem('cart', JSON.stringify(cart));
-        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+
     });
     $('#popcart').popover();
     document.getElementById("popcart").setAttribute('data-content', '<h5>Cart for your items in my shopping cart</h5>');
-
+    function updateCart(cart) {
+        for (var item in cart) {
+            document.getElementById('div' + item).innerHTML = "<button id='minus" + item + "' class='btn btn-primary btn-sm minus'>-</button> <span id='val" + item + "''>" + cart[item] + "</span> <button id='plus" + item + "' class='btn btn-primary btn-sm plus'> + </button>";
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+        console.log(cart);
+    }
+    $('.divpr').on("click", "button.minus", function () {
+        a = this.id.slice(7,);
+        cart['pr' + a] = cart['pr' + a] - 1;
+        cart['pr' + a] = Math.max(0, cart['pr' + a]);
+        document.getElementById('valpr' + a).innerHTML = cart['pr' + a];
+        updateCart(cart);
+    });
+    
+    $('.divpr').on("click", "button.plus", function () {
+        a = this.id.slice(6,);
+        cart['pr' + a] = cart['pr' + a] + 1;
+        document.getElementById('valpr' + a).innerHTML = cart['pr' + a];
+        updateCart(cart);
+    });
 </script>
 {% endblock %}
