@@ -55,7 +55,7 @@ ROOT_URLCONF = 'mew.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['mew/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
